@@ -2,8 +2,7 @@ package com.forguta.commons.util;
 
 import org.slf4j.MDC;
 
-import static com.forguta.commons.constant.LogConstant.CORRELATION_ID;
-import static com.forguta.commons.constant.LogConstant.REQUEST_ID;
+import static com.forguta.commons.constant.LogConstant.*;
 
 public class MDCContext {
 
@@ -15,20 +14,32 @@ public class MDCContext {
         MDC.get(key);
     }
 
+    public static String getCorrelationId() {
+        return MDC.get(CORRELATION_ID);
+    }
+
     public static void putCorrelationId(String correlationId) {
         MDC.put(CORRELATION_ID, correlationId);
+    }
+
+    public static String getRequestId() {
+        return MDC.get(REQUEST_ID);
     }
 
     public static void putRequestId(String requestId) {
         MDC.put(REQUEST_ID, requestId);
     }
 
-    public static String getCorrelationId() {
-        return MDC.get(CORRELATION_ID);
+    public static String getEventId() {
+        return MDC.get(EVENT_ID);
     }
 
-    public static String getRequestId() {
-        return MDC.get(REQUEST_ID);
+    public static void putEventId(String requestId) {
+        MDC.put(REQUEST_ID, requestId);
+    }
+
+    public static void remove(String key) {
+        MDC.remove(key);
     }
 
     public static void clear() {
