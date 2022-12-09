@@ -24,6 +24,11 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: Publish to GitHub Packages Apache Maven
+      run: mvn --batch-mode -DuseGitHubPackages=true deploy -s $GITHUB_WORKSPACE/settings.xml
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
     - name: Set Release version env variable
       run: |
         echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
@@ -38,8 +43,3 @@ jobs:
         release_name: Release ${{ env.RELEASE_VERSION }}
         draft: false
         prerelease: false
-
-    - name: Publish to GitHub Packages Apache Maven
-      run: mvn --batch-mode -DuseGitHubPackages=true deploy -s $GITHUB_WORKSPACE/settings.xml
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
