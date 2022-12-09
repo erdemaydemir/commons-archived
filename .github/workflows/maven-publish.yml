@@ -28,16 +28,16 @@ jobs:
       run: |
         echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-    - name: Bump version and push tag
-      id: tag_version
-      uses: mathieudutour/github-tag-action@v6.1
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest
       env:
-        GITHUB_TOKEN: ${{ github.token }}
-    - name: Create a GitHub release
-      uses: ncipollo/release-action@v1
+        GITHUB_TOKEN: ${{ github.token }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag: ${{ env.RELEASE_VERSION }}
-        name: Release ${{ env.RELEASE_VERSION }}
+        tag_name: ${{ RELEASE_VERSION }}
+        release_name: Release ${{ RELEASE_VERSION }}
+        draft: false
+        prerelease: false
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn --batch-mode -DuseGitHubPackages=true deploy -s $GITHUB_WORKSPACE/settings.xml
